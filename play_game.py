@@ -1,8 +1,5 @@
 from src.game_board import Player,Board
 
-
-
-
 def play(p1,p2):
 	"""
 	Function used to initiate the Game.

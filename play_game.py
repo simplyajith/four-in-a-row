@@ -17,7 +17,7 @@ def play(p1,p2):
 			g1.print_board()
 		g1.print_board()
 	else:
-		play()
+		play(p1,p2)
 
 
 if __name__ == "__main__":

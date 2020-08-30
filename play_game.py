@@ -7,12 +7,12 @@ def play(p1,p2):
 	:return: None
 	"""
 	
-	g1 = Board(7, 7, p1, p2)
+	game = Board(7, 7, p1, p2)
 	
-	if g1.choose_start():
-		while not g1.get_player():
-			g1.print_board()
-		g1.print_board()
+	if game.choose_start():
+		while not game.get_player():
+			game.print_board()
+		game.print_board()
 	else:
 		play(p1,p2)
 

@@ -28,12 +28,12 @@ class Board:
 							  "Choice:  ")
 		print(choose_player)
 		if choose_player == "1":
-			self.player1.setflag(True)
-			self.player2.setflag(False)
+			self.player1.flag = True
+			self.player2.flag = False
 			return True
 		if choose_player == "2":
-			self.player2.setflag(True)
-			self.player1.setflag(False)
+			self.player2.flag = True
+			self.player1.flag = False
 			return True
 		else:
 			print("Please type input as either 1 or 2")
@@ -47,7 +47,7 @@ class Board:
 				False, otherwise.
 		
 		"""
-		if self.player1.getflag():
+		if self.player1.flag:
 			status = self.__move(self.player1)
 			if status:
 				return True
@@ -59,7 +59,8 @@ class Board:
 		
 		return False
 	
-	def __set_flag(self, player1, player2):
+	@staticmethod
+	def __set_flag(player1, player2):
 		"""
 		Resets the player flag to alternate the play between player 1 and 2
 		
@@ -69,12 +70,12 @@ class Board:
 				Else, resets resets player2 flag as False and sets player1 flag as True
 		"""
 		
-		if player1.getflag():
-			player1.setflag(False)
-			player2.setflag(True)
+		if player1.flag:
+			player1.flag = False
+			player2.flag = True
 		else:
-			player2.setflag(False)
-			player1.setflag(True)
+			player2.flag = False
+			player1.flag = True
 	
 	def __verify_columnn_is_valid(self, column):
 		"""
@@ -139,7 +140,7 @@ class Board:
 			
 			if self.win_obj.verify_winner(board, valid_row, column_val, self.__move_symbol[player]):
 				print("*" * 100)
-				print(f"Congrats!! {player.getname} has won the game.")
+				print(f"Congrats!! {player.name} has won the game.")
 				print("*" * 100)
 				return True
 		
@@ -167,7 +168,7 @@ class Board:
 		:return:True,if the game is won or drawn.
 		"""
 		
-		print(f"Player {player.getname}'s turn to drop the symbol")
+		print(f"Player {player.name}'s turn to drop the symbol")
 		print()
 		try:
 			
@@ -191,12 +192,14 @@ class Player:
 		self.__name = name
 		self.__flag = flag
 	
-	def getflag(self):
+	@property
+	def flag(self):
 		return self.__flag
 	
-	def setflag(self, value):
+	@flag.setter
+	def flag(self, value):
 		self.__flag = value
 	
 	@property
-	def getname(self):
+	def name(self):
 		return self.__name

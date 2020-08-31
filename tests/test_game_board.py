@@ -11,16 +11,16 @@ class TestPlayerAttributes:
 	
 	@pytest.mark.smoke
 	def test_get_flag(self):
-		assert self.player1.getflag() is None
+		assert self.player1.flag is None
 	
 	@pytest.mark.smoke
 	def test_set_flag(self):
-		self.player1.setflag(True)
-		assert self.player1.getflag() is True
+		self.player1.flag = True
+		assert self.player1.flag is True
 	
 	@pytest.mark.smoke
 	def test_get_name(self):
-		assert self.player1.getname == "player1"
+		assert self.player1.name == "player1"
 		
 		
 class TestChooseStart:
@@ -32,7 +32,7 @@ class TestChooseStart:
 		board_obj = Board(7, 7, player1, player2)
 		
 		with mock.patch.object(builtins, 'input', lambda _: '1'):
-			assert board_obj.choose_start() == True and player1.getflag() == True and player2.getflag() is False
+			assert board_obj.choose_start() == True and player1.flag == True and player2.flag is False
 	
 	@pytest.mark.smoke
 	def test_choose_start_option_2(self):
@@ -41,7 +41,7 @@ class TestChooseStart:
 		board_obj = Board(7, 7, player1, player2)
 		
 		with mock.patch.object(builtins, 'input', lambda _: '2'):
-			assert board_obj.choose_start() == True and player2.getflag() == True and player1.getflag() is False
+			assert board_obj.choose_start() == True and player2.flag == True and player1.flag is False
 	
 	@pytest.mark.smoke
 	def test_choose_start_option_invalid(self):
@@ -52,7 +52,7 @@ class TestChooseStart:
 		invalid_data = ["3", "sdfasd", "!@#$"]
 		for i in invalid_data:
 			with mock.patch.object(builtins, 'input', lambda _: i):
-				assert board_obj.choose_start() == False and player1.getflag() is None and player2.getflag() is None
+				assert board_obj.choose_start() == False and player1.flag is None and player2.flag is None
 
 
 class TestGetPlayer:

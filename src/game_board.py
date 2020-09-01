@@ -1,7 +1,8 @@
 from src.verify_winner import BoardWinner
 from src.board_manger import BoardManager
 
-class Board:
+
+class Board(BoardManager):
 	
 	def __init__(self, row, column, player1, player2):
 		self.__row = int(row)
@@ -11,7 +12,6 @@ class Board:
 		self.player2 = player2
 		self.__move_symbol = {self.player1: "X", self.player2: "Y"}
 		self.win_obj = BoardWinner()
-		self.board_manager_obj = BoardManager(self.__board)
 		
 	def choose_start(self):
 		"""
@@ -61,7 +61,8 @@ class Board:
 		return False
 	
 	def print_board(self):
-		self.board_manager_obj.print_board()
+		self.print_board_common(self.__board)
+		
 		
 	def __make_move(self, player, column_val):
 		
@@ -82,9 +83,9 @@ class Board:
 		board = self.__board
 		played = False
 		
-		if self.board_manager_obj.verify_columnn_is_valid(column_val):
+		if self.verify_columnn_is_valid(board,column_val):
 			played = True
-			valid_row = self.board_manager_obj.get_valid_row(column_val)
+			valid_row = self.get_valid_row(board,column_val)
 			self.__board[valid_row][column_val] = self.__move_symbol[player]
 			
 			if self.win_obj.verify_winner(board, valid_row, column_val, self.__move_symbol[player]):

@@ -1,5 +1,5 @@
 from src.verify_winner import BoardWinner
-
+from src.board_manger import BoardManager
 
 class Board:
 	
@@ -11,6 +11,7 @@ class Board:
 		self.player2 = player2
 		self.__move_symbol = {self.player1: "X", self.player2: "Y"}
 		self.win_obj = BoardWinner()
+		self.board_manager_obj = BoardManager(self.__board)
 		
 	def choose_start(self):
 		"""
@@ -59,61 +60,9 @@ class Board:
 		
 		return False
 	
-	@staticmethod
-	def __set_flag(player1, player2):
-		"""
-		Resets the player flag to alternate the play between player 1 and 2
-		
-		:param player1: player 1
-		:param player2: player 2
-		:return: If player1 flag is set as True, resets player1 flag as False and sets player2 flag as True
-				Else, resets resets player2 flag as False and sets player1 flag as True
-		"""
-		
-		if player1.flag:
-			player1.flag = False
-			player2.flag = True
-		else:
-			player2.flag = False
-			player1.flag = True
-	
-	def __verify_columnn_is_valid(self, column):
-		"""
-		
-		:param column: column chosen by the player to drop players symbol
-		:return: True if the top of the column is equal to 0
-				False, otherwise
-		"""
-		
-		return self.__board[0][column] == 0
-	
-	def __get_valid_row(self, column):
-		"""
-		
-		:param column: current valid column chosen by the player
-		:return: After player, chooses a valid column returns the row value with 0 from the bottom
-		"""
-		
-		board = self.__board
-		
-		for i in range(self.__row - 1, -1, -1):
-			if board[i][column] == 0:
-				return i
-	
 	def print_board(self):
-		"""
-		prints the board after every move for players reference.
-		:return: None
-		"""
+		self.board_manager_obj.print_board()
 		
-		for row in [[i for i in range(self.__column)]]:
-			print(*row, sep="   ")
-		
-		print("#" * self.__column * 4)
-		
-		for row in self.__board:
-			print(*row, sep="   ")
-	
 	def __make_move(self, player, column_val):
 		
 		"""
@@ -133,9 +82,9 @@ class Board:
 		board = self.__board
 		played = False
 		
-		if self.__verify_columnn_is_valid(column_val):
+		if self.board_manager_obj.verify_columnn_is_valid(column_val):
 			played = True
-			valid_row = self.__get_valid_row(column_val)
+			valid_row = self.board_manager_obj.get_valid_row(column_val)
 			self.__board[valid_row][column_val] = self.__move_symbol[player]
 			
 			if self.win_obj.verify_winner(board, valid_row, column_val, self.__move_symbol[player]):
@@ -157,7 +106,7 @@ class Board:
 				print("Thanks for playing the game. The game is drawn")
 				return True
 			
-			self.__set_flag(self.player1, self.player2)
+			self.player1.set_flag(self.player2)
 	
 	def __move(self, player):
 		"""
@@ -203,3 +152,21 @@ class Player:
 	@property
 	def name(self):
 		return self.__name
+	
+	def set_flag(self, other):
+		"""
+		Resets the player flag to alternate the play between player 1 and 2
+
+		:param player1: player 1
+		:param player2: player 2
+		:return: If player1 flag is set as True, resets player1 flag as False and sets player2 flag as True
+				Else, resets resets player2 flag as False and sets player1 flag as True
+		"""
+		
+		if self.flag:
+			self.flag = False
+			other.flag = True
+		else:
+			other.flag = False
+			self.flag = True
+
